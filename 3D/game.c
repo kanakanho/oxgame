@@ -51,30 +51,13 @@ int main() {
 
 void print_game(int game[3][3][3]) {
   // ゲームの描画
-  for (int n = 0; n < 3; n++) {
-    for (int i = 0; i < 3; i++) {
-      switch (i) {
-        case 0:
-          printf("      ——  ——  ——\n");
-          printf("    / %c / %c / %c /\n", mark(game[i][0][0]),
-                 mark(game[i][0][1]), mark(game[i][0][2]));
-          break;
-        case 1:
-          printf("   / —— ——— —— /\n");
-          printf("  / %c / %C / %c /\n", mark(game[i][1][0]),
-                 mark(game[i][1][1]), mark(game[i][1][2]));
-          break;
-        case 2:
-          printf(" / —— ——— —— /\n");
-          printf("/ %c / %c / %c /\n", mark(game[i][2][0]), mark(game[i][2][1]),
-                 mark(game[i][2][2]));
-          printf(" ——  ——  ——\n");
-          break;
-        default:
-          break;
-      }
-    }
-    switch (n) {
+  for (int i = 0; i < 3; i++) {
+    printf("%d|%d|%d\n", game[i][0][0], game[i][0][1], game[i][0][2]);
+    printf("-----\n");
+    printf("%d|%d|%d\n", game[i][1][0], game[i][1][1], game[i][1][2]);
+    printf("-----\n");
+    printf("%d|%d|%d\n", game[i][2][0], game[i][2][1], game[i][2][2]);
+    switch (i) {
       case 0:
         printf("top\n");
         break;
