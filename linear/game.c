@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#define Red "\e[31m"
+#define Green "\e[32m"
+#define Cyan "\e[36m"
+#define Reset "\e[0m"
+#define Bold "\e[1m"
+#define BackWhite "\e[47m"
+
 // プロトタイプ宣言
 void print_game(int game[3][3], int input_array[3][3], char key, int input_num);
 char mark(int i);
@@ -51,66 +58,100 @@ void print_game(int game[3][3], int input_array[3][3], char key,
   // 色の設定
   char color[10] = {"\0"};
   if (key == 'x')
-    strcpy(color, "\e[31m");
+    strcpy(color, Red);
   else if (key == '+')
-    strcpy(color, "\e[32m");
+    strcpy(color, Green);
   else
-    strcpy(color, "\e[47m");
+    strcpy(color, BackWhite);
 
-  // ゲームの描画 入力の反映とエスケープシーケンスの使用
+  // ゲームの描画
+
+  // 表題の描画
   printf("     入力用       計算記号     現在の画面\n");
+
+  // 1行目の描画
   printf("┏━           ━┓             ┏━           ━┓\n");
-  printf(
-      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃             ┃  "
-      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[36m┃\e[0m "
-      "%s%s%c%s \e[m ┃\n",
-      input_array[0][0] == input_num ? "\e[47m" : "", input_array[0][0],
-      input_array[0][0] == input_num ? "\e[0m" : "",
-      input_array[0][1] == input_num ? "\e[47m" : "", input_array[0][1],
-      input_array[0][1] == input_num ? "\e[0m" : "",
-      input_array[0][2] == input_num ? "\e[47m" : "", input_array[0][2],
-      input_array[0][2] == input_num ? "\e[0m" : "", game[0][0] ? "\e[1m" : "",
-      game[0][0] == 1 ? "\e[31m" : "", mark(game[0][0]),
-      game[0][0] ? "\e[0m" : "", game[0][1] ? "\e[1m" : "",
-      game[0][1] == 1 ? "\e[31m" : "", mark(game[0][1]),
-      game[0][1] ? "\e[0m" : "", game[0][2] ? "\e[1m" : "",
-      game[0][2] == 1 ? "\e[31m" : "", mark(game[0][2]),
-      game[0][2] ? "\e[0m" : "");
-  printf("┃ \e[36m━━━ ━━━ ━━━\e[0m ┃    ┏━━━┓    ┃ \e[36m━━━ ━━━ ━━━\e[0m ┃\n");
-  printf(
-      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃    ┃%s\e[1m %c "
-      "\e[0m\e[0m┃    ┃  "
-      "%s%s%c%s \e[36m┃\e[0m "
-      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[m ┃\n",
-      input_array[1][0] == input_num ? "\e[47m" : "", input_array[1][0],
-      input_array[1][0] == input_num ? "\e[0m" : "",
-      input_array[1][1] == input_num ? "\e[47m" : "", input_array[1][1],
-      input_array[1][1] == input_num ? "\e[0m" : "",
-      input_array[1][2] == input_num ? "\e[47m" : "", input_array[1][2],
-      input_array[1][2] == input_num ? "\e[0m" : "", color, key,
-      game[1][0] ? "\e[1m" : "", game[1][0] == 1 ? "\e[31m" : "",
-      mark(game[1][0]), game[1][0] ? "\e[0m" : "", game[1][1] ? "\e[1m" : "",
-      game[1][1] == 1 ? "\e[31m" : "", mark(game[1][1]),
-      game[1][1] ? "\e[0m" : "", game[1][2] ? "\e[1m" : "",
-      game[1][2] == 1 ? "\e[31m" : "", mark(game[1][2]),
-      game[1][2] ? "\e[0m" : "");
-  printf("┃ \e[36m━━━ ━━━ ━━━\e[0m ┃    ┗━━━┛    ┃ \e[36m━━━ ━━━ ━━━\e[0m ┃\n");
-  printf(
-      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃             ┃  "
-      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[36m┃\e[0m "
-      "%s%s%c%s \e[m ┃\n",
-      input_array[2][0] == input_num ? "\e[47m" : "", input_array[2][0],
-      input_array[2][0] == input_num ? "\e[0m" : "",
-      input_array[2][1] == input_num ? "\e[47m" : "", input_array[2][1],
-      input_array[2][1] == input_num ? "\e[0m" : "",
-      input_array[2][2] == input_num ? "\e[47m" : "", input_array[2][2],
-      input_array[2][2] == input_num ? "\e[0m" : "", game[2][0] ? "\e[1m" : "",
-      game[2][0] == 1 ? "\e[31m" : "", mark(game[2][0]),
-      game[2][0] ? "\e[0m" : "", game[2][1] ? "\e[1m" : "",
-      game[2][1] == 1 ? "\e[31m" : "", mark(game[2][1]),
-      game[2][1] ? "\e[0m" : "", game[2][2] ? "\e[1m" : "",
-      game[2][2] == 1 ? "\e[31m" : "", mark(game[2][2]),
-      game[2][2] ? "\e[0m" : "");
+
+  // 2行目の描画
+  // 先頭
+  printf("┃ ");
+  // 入力用の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s %d %s", input_array[0][i] == input_num ? BackWhite : "",
+           input_array[0][i], input_array[0][i] == input_num ? Reset : "");
+    if (i != 2) printf("%s┃%s", Cyan, Reset);
+  }
+  // 計算記号の描画
+  printf(" ┃             ┃  ");
+  // 現在の画面の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s%s%c%s ", game[0][i] ? Bold : "", game[0][i] == 1 ? Red : "",
+           mark(game[0][i]), game[0][i] ? Reset : "");
+    if (i != 2)
+      printf("%s┃%s ", Cyan, Reset);
+    else
+      printf(" %s┃\n", Reset);
+  }
+
+  // 3行目の描画
+  // 入力用の描画
+  printf("┃ %s━━━ ━━━ ━━━%s ┃", Cyan, Reset);
+  // 計算記号の描画
+  printf("    ┏━━━┓    ");
+  // 現在の画面の描画
+  printf("┃ %s━━━ ━━━ ━━━%s ┃\n", Cyan, Reset);
+
+  // 4行目の描画
+  // 先頭
+  printf("┃ ");
+  // 入力用の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s %d %s", input_array[1][i] == input_num ? BackWhite : "",
+           input_array[1][i], input_array[1][i] == input_num ? Reset : "");
+    if (i != 2) printf("%s┃%s", Cyan, Reset);
+  }
+  // 計算記号の描画
+  printf(" ┃    ┃%s\e[1m %c \e[0m┃    ┃  ", color, key);
+  // 現在の画面の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s%s%c%s ", game[1][i] ? Bold : "", game[1][i] == 1 ? Red : "",
+           mark(game[1][i]), game[1][i] ? Reset : "");
+    if (i != 2)
+      printf("%s┃%s ", Cyan, Reset);
+    else
+      printf(" %s┃\n", Reset);
+  }
+
+  // 5行目の描画
+  // 入力用の描画
+  printf("┃ %s━━━ ━━━ ━━━%s ┃", Cyan, Reset);
+  // 計算記号の描画
+  printf("    ┗━━━┛    ");
+  // 現在の画面の描画
+  printf("┃ %s━━━ ━━━ ━━━%s ┃\n", Cyan, Reset);
+
+  // 6行目の描画
+  // 先頭
+  printf("┃ ");
+  // 入力用の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s %d %s", input_array[2][i] == input_num ? BackWhite : "",
+           input_array[2][i], input_array[2][i] == input_num ? Reset : "");
+    if (i != 2) printf("%s┃%s", Cyan, Reset);
+  }
+  // 計算記号の描画
+  printf(" ┃             ┃  ");
+  // 現在の画面の描画
+  for (int i = 0; i < 3; i++) {
+    printf("%s%s%c%s ", game[2][i] ? Bold : "", game[2][i] == 1 ? Red : "",
+           mark(game[2][i]), game[2][i] ? Reset : "");
+    if (i != 2)
+      printf("%s┃%s ", Cyan, Reset);
+    else
+      printf(" %s┃\n", Reset);
+  }
+
+  // 7行目の描画
   printf("┗━           ━┛             ┗━           ━┛\n");
 }
 
@@ -130,9 +171,9 @@ void input_game(int game[3][3], int player) {
   // playerの色の設定
   char color[10] = {"\0"};
   if (player == 1)
-    strcpy(color, "\e[31m");
+    strcpy(color, Red);
   else if (player == 2)
-    strcpy(color, "\e[0m");
+    strcpy(color, Reset);
   printf("\e[1m%s%c\e[0m のターンです。\n", color, mark(player));
   // gameに空きがあるか確認
   for (int i = 0; i < 3; i++) {
@@ -154,7 +195,9 @@ void input_game(int game[3][3], int player) {
       while (input_num <= 9) {
         // gameに空きがない場合の処理
         if (game_check == 9)
-          printf("新たに入力するスペースがないため「x 」が選択されました。\n");
+          printf(
+              "新たに入力するスペースがないため「x "
+              "」が選択されました。\n");
         // 値の入力
         print_game(game, sample_array, key, input_num);
         printf("%dに入力したい数字を入力してください(0,1)", input_num);
