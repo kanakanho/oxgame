@@ -111,7 +111,7 @@ void print_game(int game[3][3], int input_array[3][3], char key,
     if (i != 2) printf("%s┃%s", Cyan, Reset);
   }
   // 計算記号の描画
-  printf(" ┃    ┃%s\e[1m %c \e[0m┃    ┃  ", color, key);
+  printf(" ┃    ┃%s%s %c %s┃    ┃  ", color, Bold, key, Reset);
   // 現在の画面の描画
   for (int i = 0; i < 3; i++) {
     printf("%s%s%c%s ", game[1][i] ? Bold : "", game[1][i] == 1 ? Red : "",
