@@ -59,7 +59,7 @@ void print_game(int game[3][3], int input_array[3][3], char key,
 
   // ゲームの描画 入力の反映とエスケープシーケンスの使用
   printf("     入力用       計算記号     現在の画面\n");
-  printf("┏             ┓             ┏             ┓\n");
+  printf("┏━           ━┓             ┏━           ━┓\n");
   printf(
       "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃             ┃  "
       "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[36m┃\e[0m "
@@ -111,7 +111,7 @@ void print_game(int game[3][3], int input_array[3][3], char key,
       game[2][1] ? "\e[0m" : "", game[2][2] ? "\e[1m" : "",
       game[2][2] == 1 ? "\e[31m" : "", mark(game[2][2]),
       game[2][2] ? "\e[0m" : "");
-  printf("┗             ┛             ┗             ┛\n");
+  printf("┗━           ━┛             ┗━           ━┛\n");
 }
 
 // 入力を受け付け、処理する関数
