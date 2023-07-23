@@ -61,7 +61,8 @@ void print_game(int game[3][3], int input_array[3][3], char key,
   printf("     入力用       計算記号     現在の画面\n");
   printf("┏             ┓             ┏             ┓\n");
   printf(
-      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃             ┃  %s%s%c%s ┃ %s%s%c%s ┃ "
+      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃             ┃  "
+      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[36m┃\e[0m "
       "%s%s%c%s \e[m ┃\n",
       input_array[0][0] == input_num ? "\e[47m" : "", input_array[0][0],
       input_array[0][0] == input_num ? "\e[0m" : "",
@@ -75,11 +76,12 @@ void print_game(int game[3][3], int input_array[3][3], char key,
       game[0][1] ? "\e[0m" : "", game[0][2] ? "\e[1m" : "",
       game[0][2] == 1 ? "\e[31m" : "", mark(game[0][2]),
       game[0][2] ? "\e[0m" : "");
-  printf("┃ ━━━ ━━━ ━━━ ┃    ┏━━━┓    ┃ ━━━ ━━━ ━━━ ┃\n");
+  printf("┃ \e[36m━━━ ━━━ ━━━\e[0m ┃    ┏━━━┓    ┃ \e[36m━━━ ━━━ ━━━\e[0m ┃\n");
   printf(
-      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃    ┃%s\e[1m %c \e[0m\e[0m┃    ┃  "
-      "%s%s%c%s ┃ "
-      "%s%s%c%s ┃ %s%s%c%s \e[m ┃\n",
+      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃    ┃%s\e[1m %c "
+      "\e[0m\e[0m┃    ┃  "
+      "%s%s%c%s \e[36m┃\e[0m "
+      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[m ┃\n",
       input_array[1][0] == input_num ? "\e[47m" : "", input_array[1][0],
       input_array[1][0] == input_num ? "\e[0m" : "",
       input_array[1][1] == input_num ? "\e[47m" : "", input_array[1][1],
@@ -92,9 +94,10 @@ void print_game(int game[3][3], int input_array[3][3], char key,
       game[1][1] ? "\e[0m" : "", game[1][2] ? "\e[1m" : "",
       game[1][2] == 1 ? "\e[31m" : "", mark(game[1][2]),
       game[1][2] ? "\e[0m" : "");
-  printf("┃ ━━━ ━━━ ━━━ ┃    ┗━━━┛    ┃ ━━━ ━━━ ━━━ ┃\n");
+  printf("┃ \e[36m━━━ ━━━ ━━━\e[0m ┃    ┗━━━┛    ┃ \e[36m━━━ ━━━ ━━━\e[0m ┃\n");
   printf(
-      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃             ┃  %s%s%c%s ┃ %s%s%c%s ┃ "
+      "┃ %s %d %s\e[36m┃\e[0m%s %d %s\e[36m┃\e[0m%s %d %s ┃             ┃  "
+      "%s%s%c%s \e[36m┃\e[0m %s%s%c%s \e[36m┃\e[0m "
       "%s%s%c%s \e[m ┃\n",
       input_array[2][0] == input_num ? "\e[47m" : "", input_array[2][0],
       input_array[2][0] == input_num ? "\e[0m" : "",
@@ -124,7 +127,13 @@ void input_game(int game[3][3], int player) {
   char key = '?';
   // 計算記号の決定
   print_game(game, sample_array, key, input);
-  printf("プレイヤー%dのターンです。\n", player);
+  // playerの色の設定
+  char color[10] = {"\0"};
+  if (player == 1)
+    strcpy(color, "\e[31m");
+  else if (player == 2)
+    strcpy(color, "\e[0m");
+  printf("\e[1m%s%c\e[0m のターンです。\n", color, mark(player));
   // gameに空きがあるか確認
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
