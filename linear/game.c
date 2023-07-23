@@ -1,7 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 
 //
-void print_game(int game[3][3], int input_array[3][3], char key);
+void print_game(int game[3][3], int input_array[3][3], char key, int input_num);
 char mark(int i);
 void input_game(int game[3][3], int player);
 void calc_x(int game[3][3], int input_array[3][3]);
@@ -45,22 +46,67 @@ int main() {
   return 0;
 }
 
-void print_game(int game[3][3], int input_array[3][3], char key) {
-  // 前回のゲームの描画
+void print_game(int game[3][3], int input_array[3][3], char key,
+                int input_num) {
+  char color[10] = {"\0"};
+  if (key == 'x')
+    strcpy(color, "\x1b[31m");
+  else if (key == '+')
+    strcpy(color, "\x1b[32m");
+  else
+    strcpy(color, "\e[47m");
+
+  // ゲームの描画
   printf("     入力用       計算記号     現在の画面\n");
   printf("┏             ┓             ┏             ┓\n");
-  printf("┃  %d | %d | %d  ┃             ┃  %c | %c | %c  ┃\n",
-         input_array[0][0], input_array[0][1], input_array[0][2],
-         mark(game[0][0]), mark(game[0][1]), mark(game[0][2]));
-  printf("┃ --- --- --- ┃    ┏━━━┓    ┃ --- --- --- ┃\n");
-  printf("┃  %d | %d | %d  ┃    ┃%c %c %c┃    ┃  %c | %c | %c  ┃\n",
-         input_array[1][0], input_array[1][1], input_array[1][2],
-         key ? "\x1b[31m" : "", key, key ? "\x1b[0m" : "", mark(game[1][0]),
-         mark(game[1][1]), mark(game[1][2]));
-  printf("┃ --- --- --- ┃    ┗━━━┛    ┃ --- --- --- ┃\n");
-  printf("┃  %d | %d | %d  ┃             ┃  %c | %c | %c  ┃\n",
-         input_array[2][0], input_array[2][1], input_array[2][2],
-         mark(game[2][0]), mark(game[2][1]), mark(game[2][2]));
+  printf(
+      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃             ┃  %s%s%c%s ┃ %s%s%c%s ┃ "
+      "%s%s%c%s \e[m ┃\n",
+      input_array[0][0] == input_num ? "\e[47m" : "", input_array[0][0],
+      input_array[0][0] == input_num ? "\x1b[0m" : "",
+      input_array[0][1] == input_num ? "\e[47m" : "", input_array[0][1],
+      input_array[0][1] == input_num ? "\x1b[0m" : "",
+      input_array[0][2] == input_num ? "\e[47m" : "", input_array[0][2],
+      input_array[0][2] == input_num ? "\x1b[0m" : "",
+      game[0][0] ? "\e[1m" : "", game[0][0] == 1 ? "\e[31m" : "",
+      mark(game[0][0]), game[0][0] ? "\e[0m" : "", game[0][1] ? "\e[1m" : "",
+      game[0][1] == 1 ? "\e[31m" : "", mark(game[0][1]),
+      game[0][1] ? "\e[0m" : "", game[0][2] ? "\e[1m" : "",
+      game[0][2] == 1 ? "\e[31m" : "", mark(game[0][2]),
+      game[0][2] ? "\e[0m" : "");
+  printf("┃ ━━━ ━━━ ━━━ ┃    ┏━━━┓    ┃ ━━━ ━━━ ━━━ ┃\n");
+  printf(
+      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃    ┃%s\x1b[1m %c \x1b[0m\e[0m┃    ┃  "
+      "%s%s%c%s ┃ "
+      "%s%s%c%s ┃ %s%s%c%s \e[m ┃\n",
+      input_array[1][0] == input_num ? "\e[47m" : "", input_array[1][0],
+      input_array[1][0] == input_num ? "\x1b[0m" : "",
+      input_array[1][1] == input_num ? "\e[47m" : "", input_array[1][1],
+      input_array[1][1] == input_num ? "\x1b[0m" : "",
+      input_array[1][2] == input_num ? "\e[47m" : "", input_array[1][2],
+      input_array[1][2] == input_num ? "\x1b[0m" : "", color, key,
+      game[1][0] ? "\e[1m" : "", game[1][0] == 1 ? "\e[31m" : "",
+      mark(game[1][0]), game[1][0] ? "\e[0m" : "", game[1][1] ? "\e[1m" : "",
+      game[1][1] == 1 ? "\e[31m" : "", mark(game[1][1]),
+      game[1][1] ? "\e[0m" : "", game[1][2] ? "\e[1m" : "",
+      game[1][2] == 1 ? "\e[31m" : "", mark(game[1][2]),
+      game[1][2] ? "\e[0m" : "");
+  printf("┃ ━━━ ━━━ ━━━ ┃    ┗━━━┛    ┃ ━━━ ━━━ ━━━ ┃\n");
+  printf(
+      "┃ %s %d %s┃%s %d %s┃%s %d %s ┃             ┃  %s%s%c%s ┃ %s%s%c%s ┃ "
+      "%s%s%c%s \e[m ┃\n",
+      input_array[2][0] == input_num ? "\e[47m" : "", input_array[2][0],
+      input_array[2][0] == input_num ? "\x1b[0m" : "",
+      input_array[2][1] == input_num ? "\e[47m" : "", input_array[2][1],
+      input_array[2][1] == input_num ? "\x1b[0m" : "",
+      input_array[2][2] == input_num ? "\e[47m" : "", input_array[2][2],
+      input_array[2][2] == input_num ? "\x1b[0m" : "",
+      game[2][0] ? "\e[1m" : "", game[2][0] == 1 ? "\e[31m" : "",
+      mark(game[2][0]), game[2][0] ? "\e[0m" : "", game[2][1] ? "\e[1m" : "",
+      game[2][1] == 1 ? "\e[31m" : "", mark(game[2][1]),
+      game[2][1] ? "\e[0m" : "", game[2][2] ? "\e[1m" : "",
+      game[2][2] == 1 ? "\e[31m" : "", mark(game[2][2]),
+      game[2][2] ? "\e[0m" : "");
   printf("┗             ┛             ┗             ┛\n");
 }
 
@@ -75,25 +121,26 @@ void input_game(int game[3][3], int player) {
   char key = '?';
   // gameに空きがあるか確認
   for (int i = 0; i < 3; i++) {
-    for (int j = 0; i < 3; i++) {
-      if (game[i][j] != 0) {
-        game_check += 1;
-      }
+    for (int j = 0; j < 3; j++) {
+      if (game[i][j] != 0) game_check += 1;
     }
   }
-  print_game(game, sample_array, key);
+  print_game(game, sample_array, key, input);
   printf("プレイヤー%dのターンです。\n", player);
-  if (game_check <= 8) {
+  if (game_check < 9) {
     printf("?の計算記号を入力してください(x,+)");
     scanf(" %c", &key);
-  } else
+  } else {
     key = 'x';
+  }
   printf("\e[1;1H\e[2J");
   // inputの処理
   switch (key) {
     case 'x':
       while (input_num <= 9) {
-        print_game(game, sample_array, key);
+        if (game_check == 9)
+          printf("新たに入力するスペースがないため「x 」が選択されました。\n");
+        print_game(game, sample_array, key, input_num);
         printf("%dに入力したい数字を入力してください(0,1)", input_num);
         scanf("%d", &input);
         if (input != 0 && input != 1) {
@@ -135,11 +182,22 @@ void input_game(int game[3][3], int player) {
         input_num++;
         printf("\e[1;1H\e[2J");
       }
+      // input_arryの値が全ての0の時の処理
+      int input_sum = 0;
+      for (int i = 0; i < 3; i++) {
+        for (int n = 0; n < 3; n++) {
+          input_sum += input_array[i][n];
+        }
+      }
+      if (input_sum == 0) {
+        printf("最低でも1つは1を選んでください。\n");
+        input_game(game, player);
+      }
       calc_x(game, input_array);
       break;
     case '+':
       while (1) {
-        print_game(game, sample_array, key);
+        print_game(game, sample_array, key, input);
         printf("%cを入力する場所の数字を1~9から選んで入力してください。",
                mark(player));
         scanf("%d", &input);
@@ -166,7 +224,7 @@ void input_game(int game[3][3], int player) {
       break;
     default:
       printf("\e[1;1H\e[2J");
-      printf("「 x 」か「 + 」を入力してください。\n");
+      printf("「 x  」か「 +  」を入力してください。\n");
       input_game(game, player);
   }
 }
