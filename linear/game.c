@@ -12,11 +12,10 @@
 void print_game(int game[3][3], int input_array[3][3], char key, int input_num);
 char mark(int i);
 void input_game(int game[3][3], int player);
-void input_x(int input_num, int game_check, int input, int input_array[3][3],
-             int sample_array[3][3], int game[3][3], char key, int first_count,
-             int player);
-void input_plus(int game[3][3], int input, int input_array[3][3],
-                int sample_array[3][3], char key, int player);
+void input_x(int game_check, int input, int input_array[3][3], int game[3][3],
+             char key, int first_count, int player);
+void input_plus(int game[3][3], int input, int input_array[3][3], char key,
+                int player);
 void calc_x(int game[3][3], int input_array[3][3]);
 int judge_game(int game[3][3]);
 
@@ -166,7 +165,6 @@ void input_game(int game[3][3], int player) {
   // 変数の宣言と初期化
   int game_check = 0;
   int input = 0;
-  int input_num = 1;
   int input_array[3][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
   int sample_array[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
   int first_count = 0;
@@ -197,11 +195,10 @@ void input_game(int game[3][3], int player) {
   // それぞれの計算記号毎の処理
   switch (key) {
     case 'x':
-      input_x(input_num, game_check, input, input_array, sample_array, game,
-              key, first_count, player);
+      input_x(game_check, input, input_array, game, key, first_count, player);
       break;
     case '+':
-      input_plus(game, input, input_array, sample_array, key, player);
+      input_plus(game, input, input_array, key, player);
       break;
     default:
       // 不正な入力の処理
@@ -211,9 +208,10 @@ void input_game(int game[3][3], int player) {
   }
 }
 
-void input_x(int input_num, int game_check, int input, int input_array[3][3],
-             int sample_array[3][3], int game[3][3], char key, int first_count,
-             int player) {
+void input_x(int game_check, int input, int input_array[3][3], int game[3][3],
+             char key, int first_count, int player) {
+  int input_num = 1;
+  int sample_array[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
   while (input_num <= 9) {
     // gameに空きがない場合の処理
     if (game_check == 9)
@@ -286,8 +284,9 @@ void input_x(int input_num, int game_check, int input, int input_array[3][3],
   calc_x(game, input_array);
 }
 
-void input_plus(int game[3][3], int input, int input_array[3][3],
-                int sample_array[3][3], char key, int player) {
+void input_plus(int game[3][3], int input, int input_array[3][3], char key,
+                int player) {
+  int sample_array[3][3] = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
   while (1) {
     // 値の入力
     print_game(game, sample_array, key, input);
