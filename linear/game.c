@@ -12,6 +12,11 @@
 void print_game(int game[3][3], int input_array[3][3], char key, int input_num);
 char mark(int i);
 void input_game(int game[3][3], int player);
+void input_x(int input_num, int game_check, int input, int input_array[3][3],
+             int sample_array[3][3], int game[3][3], char key, int first_count,
+             int player);
+void input_plus(int game[3][3], int input, int input_array[3][3],
+                int sample_array[3][3], char key, int player);
 void calc_x(int game[3][3], int input_array[3][3]);
 int judge_game(int game[3][3]);
 
@@ -192,106 +197,11 @@ void input_game(int game[3][3], int player) {
   // それぞれの計算記号毎の処理
   switch (key) {
     case 'x':
-      while (input_num <= 9) {
-        // gameに空きがない場合の処理
-        if (game_check == 9)
-          printf(
-              "新たに入力するスペースがないため「x "
-              "」が選択されました。\n");
-        // 値の入力
-        print_game(game, sample_array, key, input_num);
-        printf("%dに入力したい数字を入力してください(0,1)", input_num);
-        scanf("%d", &input);
-        // 不正な入力の処理
-        // 入力ミスの処理
-        if (input != 0 && input != 1) {
-          printf("\e[1;1H\e[2J");
-          printf("0か1の数字を入力してください。\n");
-          continue;
-        }
-        // 1の過多の処理
-        if (first_count > 3) {
-          printf("\e[1;1H\e[2J");
-          printf("1は3つまでしか入力できません。\n");
-          continue;
-        }
-        // input_numから行列の生成
-        int x = (input_num - 1) % 3;
-        int y = (input_num - 1) / 3;
-        switch (input) {
-          // そのまま反映
-          case 0:
-            input_array[y][x] = 0;
-            break;
-          case 1:
-            // 不正な入力の処理
-            // 既に1が入力されている場合の処理
-            if (input_array[y][0] == 1 || input_array[y][1] == 1 ||
-                input_array[y][2] == 1) {
-              printf("\e[1;1H\e[2J");
-              printf("同じ列に1は1つまでしか入力できません。\n");
-              continue;
-            } else if (input_array[0][x] == 1 || input_array[1][x] == 1 ||
-                       input_array[2][x] == 1) {
-              printf("\e[1;1H\e[2J");
-              printf("同じ行に1は1つまでしか入力できません。\n");
-              continue;
-            }
-            // 入力の反映
-            input_array[y][x] = 1;
-            first_count++;
-            break;
-          default:
-            break;
-        }
-        // input_numの更新
-        input_num++;
-        printf("\e[1;1H\e[2J");
-      }
-      // 不正な入力の処理
-      // input_arryの値が全ての0の時の処理
-      int input_sum = 0;
-      for (int i = 0; i < 3; i++) {
-        for (int n = 0; n < 3; n++) {
-          input_sum += input_array[i][n];
-        }
-      }
-      if (input_sum == 0) {
-        printf("最低でも1つは1を選んでください。\n");
-        input_game(game, player);
-      }
-      // gameの生成
-      calc_x(game, input_array);
+      input_x(input_num, game_check, input, input_array, sample_array, game,
+              key, first_count, player);
       break;
     case '+':
-      while (1) {
-        // 値の入力
-        print_game(game, sample_array, key, input);
-        printf("%cを入力する場所の数字を1~9から選んで入力してください。",
-               mark(player));
-        scanf("%d", &input);
-        // 不正な入力の処理
-        // 入力ミスの処理
-        if (input < 1 || input > 9) {
-          printf("\e[1;1H\e[2J");
-          printf("1~9の数字を入力してください。\n");
-          continue;
-        }
-        // 既に入力されている場所の処理
-        int x = (input - 1) % 3;
-        int y = (input - 1) / 3;
-        if (game[y][x] != 0) {
-          printf("\e[1;1H\e[2J");
-          printf("その場所に入力することはできません。\n");
-          continue;
-        }
-        break;
-      }
-      // input_arrayの生成
-      int x = (input - 1) % 3;
-      int y = (input - 1) / 3;
-      game[y][x] = player;
-      printf("\e[1;1H\e[2J");
+      input_plus(game, input, input_array, sample_array, key, player);
       break;
     default:
       // 不正な入力の処理
@@ -299,6 +209,113 @@ void input_game(int game[3][3], int player) {
       printf("「 x  」か「 +  」を入力してください。\n");
       input_game(game, player);
   }
+}
+
+void input_x(int input_num, int game_check, int input, int input_array[3][3],
+             int sample_array[3][3], int game[3][3], char key, int first_count,
+             int player) {
+  while (input_num <= 9) {
+    // gameに空きがない場合の処理
+    if (game_check == 9)
+      printf(
+          "新たに入力するスペースがないため「x "
+          "」が選択されました。\n");
+    // 値の入力
+    print_game(game, sample_array, key, input_num);
+    printf("%dに入力したい数字を入力してください(0,1)", input_num);
+    scanf("%d", &input);
+    // 不正な入力の処理
+    // 入力ミスの処理
+    if (input != 0 && input != 1) {
+      printf("\e[1;1H\e[2J");
+      printf("0か1の数字を入力してください。\n");
+      continue;
+    }
+    // 1の過多の処理
+    if (first_count > 3) {
+      printf("\e[1;1H\e[2J");
+      printf("1は3つまでしか入力できません。\n");
+      continue;
+    }
+    // input_numから行列の生成
+    int x = (input_num - 1) % 3;
+    int y = (input_num - 1) / 3;
+    switch (input) {
+      // そのまま反映
+      case 0:
+        input_array[y][x] = 0;
+        break;
+      case 1:
+        // 不正な入力の処理
+        // 既に1が入力されている場合の処理
+        if (input_array[y][0] == 1 || input_array[y][1] == 1 ||
+            input_array[y][2] == 1) {
+          printf("\e[1;1H\e[2J");
+          printf("同じ列に1は1つまでしか入力できません。\n");
+          continue;
+        } else if (input_array[0][x] == 1 || input_array[1][x] == 1 ||
+                   input_array[2][x] == 1) {
+          printf("\e[1;1H\e[2J");
+          printf("同じ行に1は1つまでしか入力できません。\n");
+          continue;
+        }
+        // 入力の反映
+        input_array[y][x] = 1;
+        first_count++;
+        break;
+      default:
+        break;
+    }
+    // input_numの更新
+    input_num++;
+    printf("\e[1;1H\e[2J");
+  }
+  // 不正な入力の処理
+  // input_arryの値が全ての0の時の処理
+  int input_sum = 0;
+  for (int i = 0; i < 3; i++) {
+    for (int n = 0; n < 3; n++) {
+      input_sum += input_array[i][n];
+    }
+  }
+  if (input_sum == 0) {
+    printf("最低でも1つは1を選んでください。\n");
+    input_game(game, player);
+  }
+  // gameの生成
+  calc_x(game, input_array);
+}
+
+void input_plus(int game[3][3], int input, int input_array[3][3],
+                int sample_array[3][3], char key, int player) {
+  while (1) {
+    // 値の入力
+    print_game(game, sample_array, key, input);
+    printf("%cを入力する場所の数字を1~9から選んで入力してください。",
+           mark(player));
+    scanf("%d", &input);
+    // 不正な入力の処理
+    // 入力ミスの処理
+    if (input < 1 || input > 9) {
+      printf("\e[1;1H\e[2J");
+      printf("1~9の数字を入力してください。\n");
+      continue;
+    }
+    // 既に入力されている場所の処理
+    int x = (input - 1) % 3;
+    int y = (input - 1) / 3;
+    if (game[y][x] != 0) {
+      printf("\e[1;1H\e[2J");
+      printf("その場所に入力することはできません。\n");
+      continue;
+    }
+    break;
+  }
+  // input_arrayの生成
+  int x = (input - 1) % 3;
+  int y = (input - 1) / 3;
+  game[y][x] = player;
+  printf("\e[1;1H\e[2J");
 }
 
 // key = 'x' の場合の gameの生成を行う関数
